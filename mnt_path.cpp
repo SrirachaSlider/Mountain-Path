@@ -29,7 +29,20 @@ ColorGrid getImage(const ElevationData& elev_data) {
 	//
 	// create ColorGrid with ColorGrid(nbrows, nbcols)
 	// fill ColorGrid with .set(row, col, color)
-	ColorGrid cg (1,1);
+	Color gray(128, 128, 128);
+	ColorGrid cg (elev_data.getRows(), elev_data.getCols(), gray);
+
+	int minElev = elev_data.getMinVal();
+	int maxElev = elev_data.getMaxVal();
+
+	for (int r = 0; r < elev_data.getRows(); r++) {
+		for (int c = 0; c < elev_data.getCols(); c++) {
+			int shading = elev_data.getVal(r, c);
+			int shade = 255 * (shading - minElev) / (maxElev - minElev);
+			Color image(shade, shade, shade);
+			cg.set(r, c, image);
+		}
+	}
 
 	return cg;
 }
@@ -50,7 +63,7 @@ void findPath(const ElevationData&  elev_data, int startRow, ColorGrid& cg) {
 
 	//cg.set(startRow, 0, Color(255, 0, 0));
 
-	for (int currCol = 0; currCol < cols - 1; currCol++) {
+	for (int currCol = 0; currCol < (cols - 1); currCol++) {
 //		cg.set(startRow, currCol, red);
 		int currPos = elev_data.getVal(startRow, currCol);
 		int straight = elev_data.getVal(startRow, currCol + 1) - currPos;
@@ -75,12 +88,9 @@ void findPath(const ElevationData&  elev_data, int startRow, ColorGrid& cg) {
 				nextRow = startRow + 1;
 			}
 		}
-
 		startRow = nextRow;
 		cg.set(startRow, currCol, red);
 	}
-
-	//startRow = nextRow;
 }
 
 //cg(startRow, cols - 1, red);
