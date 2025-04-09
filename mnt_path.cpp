@@ -48,7 +48,7 @@ void findPath(const ElevationData&  elev_data, int startRow, ColorGrid& cg) {
 
 	Color red(255, 0, 0);
 
-	cg.set(startRow, 0, red);
+	//cg.set(startRow, 0, Color(255, 0, 0));
 
 	for (int currCol = 0; currCol < cols - 1; currCol++) {
 //		cg.set(startRow, currCol, red);
@@ -77,6 +77,7 @@ void findPath(const ElevationData&  elev_data, int startRow, ColorGrid& cg) {
 		}
 
 		startRow = nextRow;
+		cg.set(startRow, currCol, red);
 	}
 
 	//startRow = nextRow;
